@@ -3,11 +3,12 @@
 //Variables
 WiFiManager wifiManager;
 bool isButtonPressed = false;
-int BUTTON_PIN = X;
-int LED_PIN = X;
+int BUTTON_PIN = 13;
+int LED_PIN = 12;
 
 void setup() {
-  pinMode(BUTTON_PIN, INPUT);
+  //pinMode(BUTTON_PIN, INPUT_PULLUP);
+  pinMode(LED_PIN, OUTPUT);
 
   Serial.begin(115200);
 
@@ -17,30 +18,35 @@ void setup() {
 }
 
 void loop() {
-  if (HIGH == digitalRead(BUTTON_PIN)) {
+  if (LOW == digitalRead(BUTTON_PIN)) {
+    if (isButtonPressed) {
+      return;
+    }
+    isButtonPressed = true;
+
     // On garde la LED allumée
     digitalWrite(LED_PIN, HIGH);
 
     // Si le bouton était déja pressé on ne va pas plus loin
-    if (isButtonPressed) {
-      return;
-    }
+
 
     //Si on arrive là, c'est la première fois qu'on détecte l'appui
+
     sendHTTPCall();
-    isButtonPressed = true;
   } else {
     // Si le bouton était déja remonté, on ne fait rien
     if (!isButtonPressed) {
       return;
     }
+    isButtonPressed = false;
 
     //Sinon, on éteint la LED
     digitalWrite(LED_PIN, LOW);
-    isButtonPressed = false;
   }
 }
 
 void sendHTTPCall() {
+  Serial.println(isButtonPressed);
+  Serial.println(digitalRead(BUTTON_PIN));
   Serial.println("I'm not a HTTP call");
 }
