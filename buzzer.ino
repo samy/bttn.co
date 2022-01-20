@@ -7,7 +7,7 @@ int BUTTON_PIN = 13;
 int LED_PIN = 12;
 
 void setup() {
-  //pinMode(BUTTON_PIN, INPUT_PULLUP);
+  pinMode(BUTTON_PIN, INPUT_PULLUP);
   pinMode(LED_PIN, OUTPUT);
 
   Serial.begin(115200);
@@ -18,7 +18,7 @@ void setup() {
 }
 
 void loop() {
-  if (LOW == digitalRead(BUTTON_PIN)) {
+  if (HIGH == digitalRead(BUTTON_PIN)) {
     if (isButtonPressed) {
       return;
     }
