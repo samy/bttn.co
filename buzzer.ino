@@ -1,3 +1,5 @@
+//https://www.arduino.cc/en/Tutorial/BuiltInExamples/Debounce
+
 #include <WiFi.h>   // Utilisation de la librairie WiFi.h
 #include <WiFiManager.h>         // https://github.com/tzapu/WiFiManager
 //Variables
