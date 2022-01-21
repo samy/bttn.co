@@ -20,7 +20,8 @@ void setup() {
   Serial.begin(115200);
 
   // WiFiManager
-  wifiManager.autoConnect("Buzzer");
+  //wifiManager.autoConnect("Buzzer");
+  //Serial.println("Connected.");
   digitalWrite(LED_PIN, ledState);
 }
 
@@ -35,12 +36,10 @@ void loop() {
     if (reading != buttonState) {
       buttonState = reading;
 
-      if (buttonState == HIGH) {
-        ledState = !ledState;
+     ledState = !ledState;
         if (ledState == LOW) {
           sendHTTPCall();
         }
-      }
     }
   }
 
@@ -48,7 +47,6 @@ void loop() {
 
   lastButtonState = reading;
 }
-
 
 void sendHTTPCall() {
   Serial.println("I'm not a HTTP call");
