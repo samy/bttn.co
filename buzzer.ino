@@ -3,46 +3,42 @@
 //Variables
 WiFiManager wifiManager;
 bool isButtonPressed = false;
-int BUTTON_PIN = 13;
-int LED_PIN = 12;
+const byte BUTTON_PIN = 14;
+const byte LED_PIN = 12;
+volatile byte state = LOW;
+unsigned long lastButtonChange;
+
 
 void setup() {
-  pinMode(BUTTON_PIN, INPUT_PULLUP);
+  pinMode(BUTTON_PIN, INPUT);
+  //attachInterrupt(digitalPinToInterrupt(BUTTON_PIN), checkButtonState, CHANGE);
+
   pinMode(LED_PIN, OUTPUT);
 
   Serial.begin(115200);
 
   // WiFiManager
-  wifiManager.autoConnect("Buzzer");
-  Serial.println("Connected.");
+  //wifiManager.autoConnect("Buzzer");
+  //Serial.println("Connected.");
 }
 
 void loop() {
-  if (HIGH == digitalRead(BUTTON_PIN)) {
-    if (isButtonPressed) {
-      return;
-    }
-    isButtonPressed = true;
-
-    // On garde la LED allumée
-    digitalWrite(LED_PIN, HIGH);
-
-    // Si le bouton était déja pressé on ne va pas plus loin
-
-
-    //Si on arrive là, c'est la première fois qu'on détecte l'appui
-
-    sendHTTPCall();
-  } else {
-    // Si le bouton était déja remonté, on ne fait rien
-    if (!isButtonPressed) {
-      return;
-    }
+  Serial.println(digitalRead(BUTTON_PIN));
+  //digitalWrite(LED_PIN, state);
+  return;
+  if (isButtonPressed & (millis() - lastButtonChange) > 300) {
     isButtonPressed = false;
-
-    //Sinon, on éteint la LED
-    digitalWrite(LED_PIN, LOW);
+    lastButtonChange = millis();
+    sendHTTPCall();
   }
+}
+
+void checkButtonState() {
+  Serial.println("changement");
+  Serial.println(state);
+
+  state = !state;
+  isButtonPressed = state;
 }
 
 void sendHTTPCall() {
