@@ -1,50 +1,55 @@
 //https://www.arduino.cc/en/Tutorial/BuiltInExamples/Debounce
 
 #include <WiFi.h>   // Utilisation de la librairie WiFi.h
-#include <WiFiManager.h>         // https://github.com/tzapu/WiFiManager
-//Variables
-WiFiManager wifiManager;
-bool isButtonPressed = false;
-const byte BUTTON_PIN = 14;
-const byte LED_PIN = 12;
-volatile byte state = LOW;
-unsigned long lastButtonChange;
+#include <WiFiManager.h>         // https://github.com/tzapu/WiFiManager//https://www.arduino.cc/en/Tutorial/BuiltInExamples/Debounce
 
+bool isButtonPressed = false;
+const byte BUTTON_PIN = 13;
+const byte LED_PIN = 12;
+int ledState = HIGH;         // the current state of the output pin
+int buttonState;             // the current reading from the input pin
+int lastButtonState = LOW;   // the previous reading from the input pin
+unsigned long lastDebounceTime = 0;  // the last time the output pin was toggled
+unsigned long debounceDelay = 50;    // the debounce time; increase if the output flickers
 
 void setup() {
   pinMode(BUTTON_PIN, INPUT);
-  //attachInterrupt(digitalPinToInterrupt(BUTTON_PIN), checkButtonState, CHANGE);
 
   pinMode(LED_PIN, OUTPUT);
 
   Serial.begin(115200);
 
   // WiFiManager
-  //wifiManager.autoConnect("Buzzer");
-  //Serial.println("Connected.");
+  wifiManager.autoConnect("Buzzer");
+  digitalWrite(LED_PIN, ledState);
 }
 
 void loop() {
-  Serial.println(digitalRead(BUTTON_PIN));
-  //digitalWrite(LED_PIN, state);
-  return;
-  if (isButtonPressed & (millis() - lastButtonChange) > 300) {
-    isButtonPressed = false;
-    lastButtonChange = millis();
-    sendHTTPCall();
+  int reading = digitalRead(BUTTON_PIN);
+
+  if (reading != lastButtonState) {
+    lastDebounceTime = millis();
   }
+
+  if ((millis() - lastDebounceTime) > debounceDelay) {
+    if (reading != buttonState) {
+      buttonState = reading;
+
+      if (buttonState == HIGH) {
+        ledState = !ledState;
+        if (ledState == LOW) {
+          sendHTTPCall();
+        }
+      }
+    }
+  }
+
+  digitalWrite(LED_PIN, ledState);
+
+  lastButtonState = reading;
 }
 
-void checkButtonState() {
-  Serial.println("changement");
-  Serial.println(state);
-
-  state = !state;
-  isButtonPressed = state;
-}
 
 void sendHTTPCall() {
-  Serial.println(isButtonPressed);
-  Serial.println(digitalRead(BUTTON_PIN));
   Serial.println("I'm not a HTTP call");
 }
