@@ -1,0 +1,2 @@
+//Renommez ce fichier en Settings.h pour l'utiliser
+String URL = ""; // URL cible

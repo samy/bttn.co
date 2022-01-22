@@ -1,3 +1,6 @@
+//Définition URL à appeler
+#include "Settings.h"
+
 //Bibliothèque AsyncHTTPSRequest_Generic pour gérer la requête HTTP, à installer via l'IDE Arduino ou depuis https://github.com/khoih-prog/AsyncHTTPSRequest_Generic
 #include <AsyncHTTPSRequest_Generic.h>
 #include <AsyncHTTPSRequest_Impl_Generic.h>
@@ -11,7 +14,7 @@
 //Bibliothèque WifiManager pour gérer le portail de connexion au WiFi et la connexion automatique, à installer via l'IDE Arduino ou depuis https://github.com/tzapu/WiFiManager
 #include <WiFiManager.h>
 
-//Variables
+//Variables techniques
 bool sendHTTPRequest = false; // Devons-nous faire la requête HTTP ?
 const byte BUTTON_PIN = 14; // Numéro du PIN auquel est relié le bouton
 const byte LED_PIN = 12; // Numéro du PIN auquel est relié la LED
@@ -22,7 +25,6 @@ unsigned long lastDebounceTime = 0;  // Variable utilisée pour le filtrage du b
 unsigned long debounceDelay = 50;    // Temps d'ajustement du debounce, à augmenter si la LED clignote trop
 AsyncHTTPSRequest request; // Objet qui va effectuée la requête HTTP
 Ticker ticker; // Objet qui va gérer la répétition
-String URL = "https://webhook.site/"; // URL cible
 
 void setup() {
   pinMode(BUTTON_PIN, INPUT);
