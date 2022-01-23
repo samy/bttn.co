@@ -12,5 +12,5 @@ Ce projet, qui m'a été proposé à l'origine par [Patrice Cassard](https://twi
 Le fonctionnement est simple : une pression sur le buzzer doit pouvoir appeler une URL via HTTP.
 
 <p align="center">
-  <a href="https://github.com/samy/bttn.co/wiki" style="font-weight:bold">Plus d'informations sur le Wiki du projet</a>
+  <a href="https://github.com/samy/bttn.co/wiki"><strong>Plus d'informations sur le Wiki du projet</strong></a>
 </p>
